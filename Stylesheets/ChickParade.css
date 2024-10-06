@@ -106,6 +106,7 @@
   --size16px: 1.6rem;
   --size24px: 2.4rem;
   --size35px: 3.5rem;
+  --size53px: 5.3rem;
   --size140px: 14rem;
 }
 
@@ -130,8 +131,8 @@
   --font-family__accent: var(--courier);
 
   /* Font Sizes */
-  --textsize__logo: var(--size140px);
-  --textsize__title: var(--size35px);
+  --textsize__logo: var(--size53px);
+  --textsize__title: var(--size53px);
   --textsize__subheading: var(--size24px);
   --textsize-body__primary: var(--size16px);
   --textsize-body__secondary: var(--size14px);
@@ -210,12 +211,12 @@ body {
   /* box model */
   margin: 0px;
   padding: 0px;
-  border: 20px solid var(--theme__color-primary);
-  box-shadow: inset 0 0 0 20px var(--theme__background-contrast);
+  border: 5px solid var(--theme__color-primary);
+  box-shadow: inset 0 0 0 6px var(--theme__background-contrast);
   box-sizing: border-box;
 
   /* background */
-  background: var(--theme__background-main);
+  background: var(--theme__background-contrast);
   background-image: var(--theme__image__background-main);
   background-size: cover;
   background-position: center;
@@ -226,6 +227,19 @@ body {
   font-size: var(--textsize-body__primary);
   text-align: center;
   color: var(--theme__text-main);
+}
+
+/* TODO: move to media queries */
+@media only screen and (min-width: 769px) {
+  body {
+    border: 20px solid var(--theme__color-primary);
+    box-shadow: inset 0 0 0 20px var(--theme__background-contrast);
+  }
+
+  #logo a,
+  #logo a:hover {
+    --textsize__logo: var(--size140px);
+  }
 }
 
 #wrapper {
@@ -247,13 +261,15 @@ body {
 /* this sets the background color across most of the site, 
   change it here and it will change in all these places. 
   Tread carefully. */
-.tableborder,
-.category,
-#subforum-list,
-#boardstats,
+.forum__row,
 .main-profile,
 .memberlist,
-#copyright {
+.redirect__row,
+.tableborder,
+#boardstats,
+#copyright,
+#index-info-box,
+#subforum-list {
   /* box model */
   border: 1px solid var(--theme__color-primary);
 
@@ -294,13 +310,11 @@ body {
 
 #logo a,
 #logo a:hover {
-  /* box model */
-  margin-left: 10px; /* Adjust spacing between image and text */
-
   /* type */
   font-family: var(--font-family__title);
   font-size: var(--textsize__logo);
   font-weight: bold;
+  text-align: center;
   text-transform: lowercase;
 }
 
@@ -327,6 +341,18 @@ a:not([name]):empty {
   display: none;
 }
 
+/* makes links in the menu readable */
+#navi a:link,
+#navi a:visited,
+#navi a:active,
+#nav__userlinks a:link,
+#nav__userlinks a:visited,
+#nav__userlinks a:active {
+  font-family: var(--font-family__body);
+  color: var(--theme__color-outline);
+  text-transform: lowercase;
+}
+
 /*------------------------------------*
       Main Title
   *-------------------------------------*/
@@ -339,12 +365,10 @@ a:not([name]):empty {
   font-size: var(--textsize__subheading);
   font-weight: bold;
   color: var(--theme__text-contrast);
+  text-align: center;
   text-transform: uppercase;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: var(--theme__color-outline);
-  /* text-shadow: 2px 2px 0 #967543, 2px -2px 0 #967543, -2px 2px 0 #967543, -2px -2px 0 #967543, 2px 0px 0 #967543, 0px 2px 0 #967543,
-    -2px 0px 0 #967543, 0px -2px 0 #967543;
-  text-shadow: -1px -1px 1px #967543, 1px 1px 1px #967543; */
 }
 
 .maintitle a:link,
@@ -355,6 +379,13 @@ a:not([name]):empty {
 
 .maintitle a:hover {
   text-decoration: underline;
+}
+
+/* TODO: move to media queries */
+@media only screen and (min-width: 769px) {
+  .maintitle {
+    font-size: var(--textsize__title);
+  }
 }
 
 .titlemedium {
@@ -475,7 +506,7 @@ a:not([name]):empty {
 .checkbox {
   /* box model */
   padding: 2px;
-  border: 1px solid var(--theme__color-secondary);
+  border: 1px solid var(--theme__color-primary);
   border-radius: 2px;
   vertical-align: middle;
 
@@ -484,7 +515,7 @@ a:not([name]):empty {
 
   /* type */
   font-size: var(--textsize-body__secondary);
-  color: var(--theme__color-secondary);
+  color: var(--theme__color-outline);
 
   /* other */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) inset;
@@ -720,7 +751,8 @@ input[name='helpbox'] {
 #header > br,
 #logostrip,
 #submenu,
-#userlinks {
+#userlinks,
+.newstext {
   display: none;
 }
 
@@ -1215,7 +1247,9 @@ span.small {
   letter-spacing: 1px;
   text-align: center;
   text-transform: uppercase;
-  color: var(--theme__color-secondary);
+  color: var(--theme__color-primary);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--theme__color-outline);
 }
 
 .account-switcher {
@@ -1324,6 +1358,70 @@ span.small {
 }
 
 /* end custom nav */
+
+/*========================================================
+ * --Index Info Box-- 
+ * This box is used on the index page to give a brief
+ * overview of your forum. This box is hidden on other
+ * pages. If you want it to show everywhere, you can
+ * remove the display: none; property. If you don't want
+ * to use the Index Info Box, you can delete this whole
+ * section.
+ *========================================================*/
+
+body:not(#idx) #index-info-box {
+  display: none;
+}
+
+#index-info-box {
+  display: grid;
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.info-header {
+  margin: 0;
+  font-family: var(--font-family__subheading);
+  color: var(--theme__color-primary);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--theme__color-outline);
+}
+
+#index-info-box p.desc,
+#index-info-box ul.desc {
+  margin: 0 0 1em;
+}
+
+#index-info-box ul.desc {
+  list-style: none;
+  padding: 0;
+}
+
+#index-info-box ul.desc li {
+  position: relative;
+  padding-left: 45px;
+}
+
+#index-info-box ul.desc li::before {
+  content: attr(date); /* Use the date attribute as content */
+  position: absolute;
+  left: 0;
+  top: 1px;
+  padding-left: 10px;
+  font-family: var(--font-family__subheading);
+  color: var(--theme__color-primary);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--theme__color-outline);
+}
+
+/* TODO: move to media queries */
+@media screen and (min-width: 769px) {
+  #index-info-box {
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 15px;
+  }
+}
 
 /*========================================================*
    *  █ █ ▀█▀ █▄█ █    ▀█▀ █▀▀ █▄█ █▀█ █   █▀█ ▀█▀ █▀▀ █▀▀
@@ -1435,7 +1533,7 @@ span.small {
   /* layout */
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 /*------------------------------------*
@@ -3193,7 +3291,7 @@ span.lastpost--desc {
 
   #nav__userlinks.dropdown-menu {
     /* box model */
-    width: 98%;
+    width: 96%;
 
     /* layout */
     position: absolute;
